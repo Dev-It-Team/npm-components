@@ -29,11 +29,6 @@
             .post(url + 'login/', credentials)
             .then(response => response.data);
     }
-    function decode() {
-        return axios
-            .get(url + 'login/tokeninfo')
-            .then(response => response.data);
-    }
 
     const SignIn = defineComponent({
         name: 'SignIn',
@@ -75,14 +70,8 @@
                     };
                     // Sign In and save token
                     const response = await signIn(credentials);
-                    // this.$store.dispatch('setToken', response.access_token);
                     // Store user info (decoded token)
-                    const user = await decode();
-                    // this.$store.dispatch('setUserInfo', user);
-                    this.credentialCallback(response, user);
-                    ElMessage.success(`Welcome back! You are logged in as ${user.Email}.`);
-
-                    this.$emit('on-login-success', response.access_token, user);
+                    this.$emit('on-login-success', response.access_token);
                 } catch (error) {
                     console.error(error);
                     // Server-handled error
